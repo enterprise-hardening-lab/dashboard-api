@@ -24,7 +24,7 @@ jobs:
       id-token: write
       contents: read
       actions: read
-      # ⚠️ Do NOT request security-events here; GitHub blocks it cross-repo
+      issues: write
 
   upload_sarif:
     name: 📤 Upload Semgrep SARIF to GitHub Security Alerts
