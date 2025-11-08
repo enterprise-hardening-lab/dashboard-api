@@ -5,13 +5,12 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-# 👇 Global workflow token permissions
 permissions:
   id-token: write
   contents: read
   actions: read
-  issues: write               # ✅ Allow orchestrator to create/update issues in app repo
-  security-events: write      # ✅ Needed for SARIF upload
+  issues: write
+  security-events: write
 
 jobs:
   orchestrate:
@@ -21,13 +20,7 @@ jobs:
       app_name: "dashboard-api"
       base_image: "ubuntu"
     secrets:
-      PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-    permissions:
-      id-token: write
-      contents: read
-      actions: read
-      issues: write            # ✅ Explicitly grant for notify-issue stage
-      security-events: write   # ✅ Required for Trivy + SARIF stages
+      personal_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  # ✅ must match orchestrator.yml
 
   upload_sarif:
     name: 📤 Upload Semgrep SARIF to GitHub Security Alerts
