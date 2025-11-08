@@ -5,10 +5,10 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-# 👇 Explicitly grant reusable workflow the required permissions
+# 👇 Top-level permissions explicitly grant reusable workflow inheritance
 permissions:
-  id-token: write
   contents: read
+  id-token: write
   actions: read
 
 jobs:
@@ -18,4 +18,5 @@ jobs:
     with:
       app_name: "dashboard-api"
       base_image: "ubuntu"
+    permissions: inherit
     secrets: inherit
