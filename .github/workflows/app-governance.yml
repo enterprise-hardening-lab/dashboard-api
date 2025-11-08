@@ -5,12 +5,13 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-# 👇 Workflow token permissions for both jobs
+# 👇 Global workflow token permissions
 permissions:
   id-token: write
   contents: read
   actions: read
-  security-events: write
+  issues: write               # ✅ Allow orchestrator to create/update issues in app repo
+  security-events: write      # ✅ Needed for SARIF upload
 
 jobs:
   orchestrate:
@@ -24,8 +25,8 @@ jobs:
       id-token: write
       contents: read
       actions: read
-      issues: write
-      security-events: write
+      issues: write            # ✅ Explicitly grant for notify-issue stage
+      security-events: write   # ✅ Required for Trivy + SARIF stages
 
   upload_sarif:
     name: 📤 Upload Semgrep SARIF to GitHub Security Alerts
