@@ -5,14 +5,17 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+# 👇 Explicitly grant reusable workflow the required permissions
 permissions:
-  id-token: write        # ✅ Required for GitHub OIDC → AWS authentication
-  contents: read         # ✅ Allows workflow to read contents from the repo
+  id-token: write
+  contents: read
+  actions: read
 
 jobs:
   orchestrate:
+    name: 🧩 Invoke Container Hardening Orchestrator
     uses: enterprise-hardening-lab/container-hardening-orchestrator/.github/workflows/orchestrator.yml@main
     with:
       app_name: "dashboard-api"
       base_image: "ubuntu"
-    secrets: inherit      # ✅ Forwards all secrets (if needed)
+    secrets: inherit
