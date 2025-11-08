@@ -6,10 +6,9 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  actions: read
   id-token: write
-  security-events: write   # ✅ Required for AWS OIDC authentication
+  contents: read
+  security-events: write  # ✅ Required for SARIF upload from orchestrator
 
 jobs:
   orchestrate:
@@ -18,7 +17,8 @@ jobs:
     with:
       app_name: "dashboard-api"
       base_image: "ubuntu"
-    secrets: inherit
     permissions:
-      id-token: write    # ✅ Explicitly allow OIDC token issuance for called workflow
+      id-token: write
       contents: read
+      security-events: write   # ✅ Pass SARIF upload rights to the orchestrator
+    secrets: inherit
