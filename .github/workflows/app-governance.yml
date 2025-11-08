@@ -5,20 +5,45 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+# 👇 Workflow token permissions for both jobs
 permissions:
   id-token: write
   contents: read
-  security-events: write  # ✅ Required for SARIF upload from orchestrator
+  actions: read
+  security-events: write
 
 jobs:
   orchestrate:
-    name: 🧩 Invoke Container Hardening Orchestrator
+    name: 🧩 Run Central Orchestrator
     uses: enterprise-hardening-lab/container-hardening-orchestrator/.github/workflows/orchestrator.yml@main
     with:
       app_name: "dashboard-api"
       base_image: "ubuntu"
+    secrets: inherit
     permissions:
       id-token: write
       contents: read
-      security-events: write   # ✅ Pass SARIF upload rights to the orchestrator
-    secrets: inherit
+      actions: read
+      # ⚠️ Do NOT request security-events here; GitHub blocks it cross-repo
+
+  upload_sarif:
+    name: 📤 Upload Semgrep SARIF to GitHub Security Alerts
+    runs-on: ubuntu-latest
+    needs: orchestrate
+    permissions:
+      security-events: write
+      contents: read
+    steps:
+      - name: 🧩 Checkout
+        uses: actions/checkout@v4
+
+      - name: ⬇️ Download Semgrep Report Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: semgrep-report
+          path: reports/generated
+
+      - name: 📤 Upload SARIF Report to GitHub Security Alerts
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: reports/generated/semgrep-report.sarif
