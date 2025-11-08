@@ -1,0 +1,14 @@
+name: 🧩 App Container Governance
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  security-pipeline:
+    uses: enterprise-hardening-lab/container-hardening-orchestrator/.github/workflows/orchestrator.yml@main
+    with:
+      app_name: "dashboard-api"
+      base_image: "ubuntu"
