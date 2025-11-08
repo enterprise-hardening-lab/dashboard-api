@@ -20,7 +20,7 @@ jobs:
       app_name: "dashboard-api"
       base_image: "ubuntu"
     secrets:
-      personal_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  # ✅ must match orchestrator.yml
+      personal_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
   upload_sarif:
     name: 📤 Upload Semgrep SARIF to GitHub Security Alerts
