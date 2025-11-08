@@ -5,11 +5,10 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-# 👇 Top-level permissions explicitly grant reusable workflow inheritance
 permissions:
   contents: read
-  id-token: write
   actions: read
+  id-token: write  # ✅ Required for AWS OIDC authentication
 
 jobs:
   orchestrate:
@@ -18,5 +17,7 @@ jobs:
     with:
       app_name: "dashboard-api"
       base_image: "ubuntu"
-    permissions: inherit
     secrets: inherit
+    permissions:
+      id-token: write    # ✅ Explicitly allow OIDC token issuance for called workflow
+      contents: read
