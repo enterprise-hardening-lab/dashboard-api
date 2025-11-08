@@ -2,7 +2,7 @@ name: 🧩 App Container Governance
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -11,7 +11,4 @@ jobs:
     with:
       app_name: "dashboard-api"
       base_image: "ubuntu"
-    secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
+    secrets: inherit
