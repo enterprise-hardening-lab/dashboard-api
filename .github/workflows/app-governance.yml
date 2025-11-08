@@ -25,6 +25,7 @@ jobs:
       contents: read
       actions: read
       issues: write
+      security-events: write
 
   upload_sarif:
     name: 📤 Upload Semgrep SARIF to GitHub Security Alerts
